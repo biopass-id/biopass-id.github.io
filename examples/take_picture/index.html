@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@biopassid/face-sdk@1.0.2/unpkg/face-sdk.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body class="h-screen p-4 flex flex-col items-center justify-center bg-gray-200">
+
+    <h1 class="font-bold text-3xl text-gray-800 mb-10 text-center">Take Picture</h1>
+
+    <!-- Container principal -->
+    <div class="h-96 aspect-video bg-white rounded-xl shadow-lg overflow-hidden mb-20" id="camera">
+
+    </div>
+
+    
+    <!-- Script -->
+    <script>
+        const { takePicture } = useCamera();
+
+        async function initialize () {
+            try {
+                const resp = await takePicture({
+                    element: document.querySelector("#camera"),
+                })
+                window.alert(`Picture taked, please see the console`);
+                console.log(resp);
+            } catch (error) {
+                alert(error);
+            }
+        }
+        initialize();
+    </script>
+</body>
+
+</html>
