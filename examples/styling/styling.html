@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@biopassid/face-sdk@1.1.1/unpkg/face-sdk.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body class="min-h-screen p-4 flex flex-col items-center justify-center bg-gray-200">
+
+    <h1 class="font-bold text-3xl text-gray-800 mb-10 text-center">Styling (Example with face detect)</h1>
+
+    <!-- Container principal -->
+    <div class="aspect-video bg-white rounded-xl shadow-lg overflow-hidden mb-10" style="height: 500px" id="camera">
+
+    </div>
+
+    <button onclick="submit()" class="px-4 py-2 mb-10 text-xl bg-white font-bold rounded shadow-lg">Iniciar</button>
+
+    <form class="flex space-x-4 w-full justify-center flex-wrap">
+
+        <!-- Mask  -->
+        <fieldset class="border-2 border-gray-400 p-4 rounded mb-4">
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Mask Style</h2>
+            <div class="w-40">
+                <label class="block">Ativo</label>
+                <input id="maskEnabled" type="checkbox" checked />
+            </div>
+            <div class="w-40">
+                <label class="block">Background Color</label>
+                <input id="maskColor" type="color" value="#000000" />
+            </div>
+            <div class="w-40">
+                <label class="block">Frame color</label>
+                <input id="maskFrameColor" type="color" value="#FFFFFF" />
+            </div>
+            <div class="w-40">
+                <label class="block">Background opacity</label>
+                <input id="maskOpacity" type="range" step=".1" min="0" max="1" value=".6"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>.6</output>
+            </div>
+            <div class="w-40">
+                <label class="block">Frame Thickness</label>
+                <input id="maskThickness" type="range" min="0" max="10" value="3"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>3</output>
+            </div>
+        </fieldset>
+
+        <!-- Botão de Voltar -->
+        <fieldset class="border-2 border-gray-400 p-4 rounded mb-4">
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Back Button Style</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="backEnabled" type="checkbox" checked />
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="backSize" type="range" min="20" max="80" value="50"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>50</output>
+            </div>
+            <div class="w-40">
+                <label class="block">Background Color</label>
+                <input id="backColor" type="color" value="#FFFFFF" />
+            </div>
+            <div class="w-40">
+                <label class="block">Padding</label>
+                <input id="backPadding" type="input" value="0"/>
+            </div>
+            <div class="bg-gray-400 my-4 h-px"></div>
+
+            <!-- back label -->
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Label</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="backLabelEnabled" type="checkbox"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Content</label>
+                <input id="backLabelContent" type="input"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="backLabelSize" type="range" min="0" max="30" value="16"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>16</output>
+            </div>
+            <div class="w-40">
+                <label class="block">Font Weight</label>
+                <select id="backLabelWeight">
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                    <option value="400" selected>400</option>
+                    <option value="500">500</option>
+                    <option value="600">600</option>
+                    <option value="700">700</option>
+                    <option value="800">800</option>
+                </select>
+            </div>
+            <div class="w-40">
+                <label class="block">Font color</label>
+                <input id="backLabelColor" type="color" value="#000000" />
+            </div>
+
+            <div class="bg-gray-400 my-4 h-px"></div>
+
+            <!-- back Icon -->
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Icon</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="backIconEnabled" type="checkbox" checked/>
+            </div>
+            <div class="w-40">
+                <label class="block">Source URL</label>
+                <input id="backIconSource" type="input"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Icon color</label>
+                <input id="backIconColor" type="color" value="#000000" />
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="backIconSize" type="range" min="20" max="80" value="30"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>30</output>
+            </div>
+        </fieldset>
+
+        <!-- Botão de Trocar camera -->
+        <fieldset class="border-2 border-gray-400 p-4 rounded mb-4">
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Switch Button Style</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="switchEnabled" type="checkbox" checked />
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="switchSize" type="range" min="20" max="80" value="50"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>50</output>
+            </div>
+            <div class="w-40">
+                <label class="block">Background Color</label>
+                <input id="switchColor" type="color" value="#FFFFFF" />
+            </div>
+            <div class="w-40">
+                <label class="block">Padding</label>
+                <input id="switchPadding" type="input" value="0"/>
+            </div>
+            <div class="bg-gray-400 my-4 h-px"></div>
+
+            <!-- switch label -->
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Label</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="switchLabelEnabled" type="checkbox"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Content</label>
+                <input id="switchLabelContent" type="input"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="switchLabelSize" type="range" min="0" max="30" value="16"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>16</output>
+            </div>
+            <div class="w-40">
+                <label class="block">Font Weight</label>
+                <select id="switchLabelWeight">
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                    <option value="400" selected>400</option>
+                    <option value="500">500</option>
+                    <option value="600">600</option>
+                    <option value="700">700</option>
+                    <option value="800">800</option>
+                </select>
+            </div>
+            <div class="w-40">
+                <label class="block">Font color</label>
+                <input id="switchLabelColor" type="color" value="#000000" />
+            </div>
+
+            <div class="bg-gray-400 my-4 h-px"></div>
+
+            <!-- switch Icon -->
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Icon</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="switchIconEnabled" type="checkbox" checked/>
+            </div>
+            <div class="w-40">
+                <label class="block">Source URL</label>
+                <input id="switchIconSource" type="input"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Icon color</label>
+                <input id="switchIconColor" type="color" value="#000000" />
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="switchIconSize" type="range" min="20" max="80" value="30"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>30</output>
+            </div>
+        </fieldset>
+
+         <!-- Botão de Capturar -->
+         <fieldset class="border-2 border-gray-400 p-4 rounded mb-4">
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Capture Button Style</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="captureEnabled" type="checkbox" checked />
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="captureSize" type="range" min="20" max="80" value="50"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>50</output>
+            </div>
+            <div class="w-40">
+                <label class="block">Background Color</label>
+                <input id="captureColor" type="color" value="#FFFFFF" />
+            </div>
+            <div class="w-40">
+                <label class="block">Padding</label>
+                <input id="capturePadding" type="input" value="0"/>
+            </div>
+            <div class="bg-gray-400 my-4 h-px"></div>
+
+            <!-- capture label -->
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Label</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="captureLabelEnabled" type="checkbox"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Content</label>
+                <input id="captureLabelContent" type="input"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="captureLabelSize" type="range" min="0" max="30" value="16"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>16</output>
+            </div>
+            <div class="w-40">
+                <label class="block">Font Weight</label>
+                <select id="captureLabelWeight">
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                    <option value="400" selected>400</option>
+                    <option value="500">500</option>
+                    <option value="600">600</option>
+                    <option value="700">700</option>
+                    <option value="800">800</option>
+                </select>
+            </div>
+            <div class="w-40">
+                <label class="block">Font color</label>
+                <input id="captureLabelColor" type="color" value="#000000" />
+            </div>
+
+            <div class="bg-gray-400 my-4 h-px"></div>
+
+            <!-- capture Icon -->
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Icon</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="captureIconEnabled" type="checkbox" checked/>
+            </div>
+            <div class="w-40">
+                <label class="block">Source URL</label>
+                <input id="captureIconSource" type="input"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Icon color</label>
+                <input id="captureIconColor" type="color" value="#000000" />
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="captureIconSize" type="range" min="20" max="80" value="30"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>30</output>
+            </div>
+        </fieldset>
+
+         <!-- Botão de Cancelar -->
+         <fieldset class="border-2 border-gray-400 p-4 rounded mb-4">
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Cancel Button Style</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="cancelEnabled" type="checkbox" checked />
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="cancelSize" type="range" min="20" max="80" value="50"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>50</output>
+            </div>
+            <div class="w-40">
+                <label class="block">Background Color</label>
+                <input id="cancelColor" type="color" value="#FF0000" />
+            </div>
+            <div class="w-40">
+                <label class="block">Padding</label>
+                <input id="cancelPadding" type="input" value="0"/>
+            </div>
+            <div class="bg-gray-400 my-4 h-px"></div>
+
+            <!-- cancel label -->
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Label</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="cancelLabelEnabled" type="checkbox"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Content</label>
+                <input id="cancelLabelContent" type="input"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="cancelLabelSize" type="range" min="0" max="30" value="16"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>16</output>
+            </div>
+            <div class="w-40">
+                <label class="block">Font Weight</label>
+                <select id="cancelLabelWeight">
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                    <option value="400" selected>400</option>
+                    <option value="500">500</option>
+                    <option value="600">600</option>
+                    <option value="700">700</option>
+                    <option value="800">800</option>
+                </select>
+            </div>
+            <div class="w-40">
+                <label class="block">Font color</label>
+                <input id="cancelabelColor" type="color" value="#FFFFFF" />
+            </div>
+
+            <div class="bg-gray-400 my-4 h-px"></div>
+
+            <!-- cancel Icon -->
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Icon</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="cancelIconEnabled" type="checkbox" checked/>
+            </div>
+            <div class="w-40">
+                <label class="block">Source URL</label>
+                <input id="cancelIconSource" type="input"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Icon color</label>
+                <input id="cancelIconColor" type="color" value="#FFFFFF" />
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="cancelIconSize" type="range" min="20" max="80" value="30"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>30</output>
+            </div>
+        </fieldset>
+
+         <!-- Botão de Confirmar -->
+         <fieldset class="border-2 border-gray-400 p-4 rounded mb-4">
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Confirm Button Style</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="confirmEnabled" type="checkbox" checked />
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="confirmSize" type="range" min="20" max="80" value="50"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>50</output>
+            </div>
+            <div class="w-40">
+                <label class="block">Background Color</label>
+                <input id="confirmColor" type="color" value="#FFFFFF" />
+            </div>
+            <div class="w-40">
+                <label class="block">Padding</label>
+                <input id="confirmPadding" type="input" value="0"/>
+            </div>
+            <div class="bg-gray-400 my-4 h-px"></div>
+
+            <!-- confirm label -->
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Label</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="confirmLabelEnabled" type="checkbox"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Content</label>
+                <input id="confirmLabelContent" type="input"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="confirmLabelSize" type="range" min="0" max="30" value="16"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>16</output>
+            </div>
+            <div class="w-40">
+                <label class="block">Font Weight</label>
+                <select id="confirmLabelWeight">
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                    <option value="400" selected>400</option>
+                    <option value="500">500</option>
+                    <option value="600">600</option>
+                    <option value="700">700</option>
+                    <option value="800">800</option>
+                </select>
+            </div>
+            <div class="w-40">
+                <label class="block">Font color</label>
+                <input id="confirmLabelColor" type="color" value="#000000" />
+            </div>
+
+            <div class="bg-gray-400 my-4 h-px"></div>
+
+            <!-- confirm Icon -->
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Icon</h2>
+            <div class="w-40">
+                <label class="block">Enabled</label>
+                <input id="confirmIconEnabled" type="checkbox" checked/>
+            </div>
+            <div class="w-40">
+                <label class="block">Source URL</label>
+                <input id="confirmIconSource" type="input"/>
+            </div>
+            <div class="w-40">
+                <label class="block">Icon color</label>
+                <input id="confirmIconColor" type="color" value="#000000" />
+            </div>
+            <div class="w-40">
+                <label class="block">Size</label>
+                <input id="confirmIconSize" type="range" min="20" max="80" value="30"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>30</output>
+            </div>
+        </fieldset>
+
+         <!-- Legenda -->
+         <fieldset class="border-2 border-gray-400 p-4 rounded mb-4">
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Legenda</h2>
+
+            <!-- confirm label -->
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Title</h2>
+            <div class="w-52">
+                <label class="block" checked>Enabled</label>
+                <input id="titleEnabled" type="checkbox"/>
+            </div>
+            <div class="w-52">
+                <label class="block">Content</label>
+                <input id="titleContent" type="input" value="Captura Facial"/>
+            </div>
+            <div class="w-52">
+                <label class="block">Size</label>
+                <input id="titleSize" type="range" min="0" max="30" value="22"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>16</output>
+            </div>
+            <div class="w-52">
+                <label class="block">Font Weight</label>
+                <select id="titleWeight">
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                    <option value="400">400</option>
+                    <option value="500">500</option>
+                    <option value="600">600</option>
+                    <option value="700" selected>700</option>
+                    <option value="800">800</option>
+                </select>
+            </div>
+            <div class="w-52">
+                <label class="block">Font color</label>
+                <input id="titleColor" type="color" value="#FFFFFF" />
+            </div>
+
+            <div class="bg-gray-400 my-4 h-px"></div>
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Subtitle</h2>
+            <div class="w-52">
+                <label class="block" checked>Enabled</label>
+                <input id="subtitleEnabled" type="checkbox"/>
+            </div>
+            <div class="w-52">
+                <label class="block">Content</label>
+                <input id="subtitleContent" type="input" value="Encaixe seu rosto no espaço abaixo"/>
+            </div>
+            <div class="w-52">
+                <label class="block">Size</label>
+                <input id="subtitleSize" type="range" min="0" max="30" value="16"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>16</output>
+            </div>
+            <div class="w-52">
+                <label class="block">Font Weight</label>
+                <select id="subtitleWeight">
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                    <option value="400" selected>400</option>
+                    <option value="500">500</option>
+                    <option value="600">600</option>
+                    <option value="700">700</option>
+                    <option value="800">800</option>
+                </select>
+            </div>
+            <div class="w-52">
+                <label class="block">Font color</label>
+                <input id="subtitleColor" type="color" value="#FFFFFF" />
+            </div>
+        </fieldset>
+
+        <!-- Opções -->
+        <fieldset class="border-2 border-gray-400 p-4 rounded mb-4">
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Opções gerais</h2>
+
+            <div class="bg-gray-400 my-4 h-px"></div>
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Face Recognizier</h2>
+            <div class="w-52">
+                <label class="block" checked>Enabled</label>
+                <input id="faceRecognizerEnabled" type="checkbox" checked/>
+            </div>
+            <div class="w-52">
+                <label class="block" checked>Auto Capture</label>
+                <input id="autoCapture" type="checkbox"/>
+            </div>
+            <div class="bg-gray-400 my-4 h-px"></div>
+            <div class="w-52">
+                <label class="block">Width</label>
+                <input id="width" type="input" value="100%"/>
+            </div>
+            <div class="w-52">
+                <label class="block">Height</label>
+                <input id="height" type="input" value="100%"/>
+            </div>
+            <div class="w-52">
+                <label class="block">Models directory</label>
+                <input id="modelsDirectory" type="input" value="/models"/>
+            </div>
+            <div class="w-52">
+                <label class="block">Font Family</label>
+                <input id="fontFamily" type="input" value="inherit"/>
+            </div>
+            <div class="bg-gray-400 my-4 h-px"></div>
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Camera presets</h2>
+            <div class="bg-gray-400 my-4 h-px"></div>
+            <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Face Recognizier</h2> <div class="w-40">
+                <label class="block">Aspect Ratio</label>
+                <select id="aspectRatio" value="1.777777777777778">
+                    <option value="1.777777777777778">16/9</option>
+                    <option value="0.5625">9/16</option>
+                    <option value="1.333333333333333">4/3</option>
+                </select>
+            </div>
+
+            <div class="w-40">
+                <label class="block">Preferred Resolution</label>
+                <select id="resolution" value="480">
+                    <option value="480">480p</option>
+                    <option value="720">720p</option>
+                    <option value="1080">1080p</option>
+                </select>
+            </div>
+            
+        </fieldset>
+    </form>
+
+    <script>
+        const { takePicture } = useCamera();
+
+        async function submit () {
+            const options = {
+                mask: {
+                    enabled: maskEnabled.checked,
+                    type: 'face',
+                    backgroundColor: maskColor.value,
+                    backgroundOpacity: maskOpacity.value,
+                    frameColor: maskFrameColor.value,
+                    frameThickness: maskThickness.value,
+                },
+                backButton: {
+                    enabled: backEnabled.checked,
+                    size: `${backSize.value}px`,
+                    backgroundColor: backColor.value,
+                    label: {
+                        enabled: backLabelEnabled.checked,
+                        content: backLabelContent.value,
+                        fontSize: `${backLabelSize.value}px`,
+                        fontWeight: backLabelWeight.value,
+                        color: backLabelColor.value,
+                    },
+                    icon: {
+                        enabled: backIconEnabled.checked,
+                        source: backIconSource.value,
+                        color: backIconColor.value,
+                        size: `${backIconSize.value}px`,
+                    },
+                    padding: backPadding.value,
+                },
+                switchButton: {
+                    enabled: switchEnabled.checked,
+                    size: `${switchSize.value}px`,
+                    backgroundColor: switchColor.value,
+                    label: {
+                        enabled: switchLabelEnabled.checked,
+                        content: switchLabelContent.value,
+                        fontSize: `${switchLabelSize.value}px`,
+                        fontWeight: switchLabelWeight.value,
+                        color: switchLabelColor.value,
+                    },
+                    icon: {
+                        enabled: switchIconEnabled.checked,
+                        source: switchIconSource.value,
+                        color: switchIconColor.value,
+                        size: `${switchIconSize.value}px`,
+                    },
+                    padding: switchPadding.value,
+                },
+                captureButton: {
+                    enabled: captureEnabled.checked,
+                    size: `${captureSize.value}px`,
+                    backgroundColor: captureColor.value,
+                    label: {
+                        enabled: captureLabelEnabled.checked,
+                        content: captureLabelContent.value,
+                        fontSize: `${captureLabelSize.value}px`,
+                        fontWeight: captureLabelWeight.value,
+                        color: captureLabelColor.value,
+                    },
+                    icon: {
+                        enabled: captureIconEnabled.checked,
+                        source: captureIconSource.value,
+                        color: captureIconColor.value,
+                        size: `${captureIconSize.value}px`,
+                    },
+                    padding: capturePadding.value,
+                },
+                cancelButton: {
+                    enabled: cancelEnabled.checked,
+                    size: `${cancelSize.value}px`,
+                    backgroundColor: cancelColor.value,
+                    label: {
+                        enabled: cancelLabelEnabled.checked,
+                        content: cancelLabelContent.value,
+                        fontSize: `${cancelLabelSize.value}px`,
+                        fontWeight: cancelLabelWeight.value,
+                        color: cancelabelColor.value,
+                    },
+                    icon: {
+                        enabled: cancelIconEnabled.checked,
+                        source: cancelIconSource.value,
+                        color: cancelIconColor.value,
+                        size: `${cancelIconSize.value}px`,
+                    },
+                    padding: cancelPadding.value,
+                },
+                confirmButton: {
+                    enabled: confirmEnabled.checked,
+                    size: `${confirmSize.value}px`,
+                    backgroundColor: confirmColor.value,
+                    label: {
+                        enabled: confirmLabelEnabled.checked,
+                        content: confirmLabelContent.value,
+                        fontSize: `${confirmLabelSize.value}px`,
+                        fontWeight: confirmLabelWeight.value,
+                        color: confirmLabelColor.value,
+                    },
+                    icon: {
+                        enabled: confirmIconEnabled.checked,
+                        source: confirmIconSource.value,
+                        color: confirmIconColor.value,
+                        size: `${confirmIconSize.value}px`,
+                    },
+                    padding: confirmPadding.value,
+                },
+                legend: {
+                    title:  {
+                        enabled: titleEnabled.checked,
+                        content: titleContent.value,
+                        fontSize: `${titleSize.value}px`,
+                        fontWeight: titleWeight.value,
+                        color: titleColor.value,
+                    },
+                    subtitle:  {
+                        enabled: subtitleEnabled.checked,
+                        content: subtitleContent.value,
+                        fontSize: `${subtitleSize.value}px`,
+                        fontWeight: subtitleWeight.value,
+                        color: subtitleColor.value,
+                    },
+                },
+                faceRecognizer: {
+                    enabled: faceRecognizerEnabled.checked,
+                    autoCapture: autoCapture.checked,
+                },
+                width: width.value,
+                height: height.value,
+                modelsDirectory: modelsDirectory.value,
+                cameraPresets: {
+                    aspectRatio: aspectRatio.value,
+                    preferredResolution: resolution.value,
+                    deviceId: null,
+                },
+                fontFamily: fontFamily.value,
+            }
+
+
+            const resp = await takePicture({
+                element: document.querySelector("#camera"),
+                options,
+            })
+
+            console.log(resp);
+
+            window.alert('Detect finished')
+        }
+    </script>
+
+
+</body>
+
+</html>
