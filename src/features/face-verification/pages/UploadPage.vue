@@ -1,17 +1,15 @@
 <template>
-    <div class="flex-1 flex items-center justify-center">
-        <FilePicker @fileSelected="onSelectFile"/>
-    </div>
+    <UploadTemplate @fileSelected="onSelectFile"/>
 </template>
 
 <script lang='ts'>
 import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { FilePicker } from '../../../components';
+import UploadTemplate from '../../../components/pages/UploadTemplate.vue';
 import useCropStore from '../store';
 
 const UploadPage = defineComponent({
-    components: { FilePicker },
+    components: { UploadTemplate },
     setup() {
         const { setEnrollFileImage, setVerifyFileImage } = useCropStore();
         const { replace } = useRouter();

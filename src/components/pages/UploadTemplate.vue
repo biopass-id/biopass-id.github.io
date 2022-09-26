@@ -1,6 +1,6 @@
 <template>
     <div class="flex-1 flex items-center justify-center">
-        <FilePicker @fileSelected="onSelectFile"/>
+        <FilePicker @fileSelected="$emit('fileSelected', $event)"/>
     </div>
 </template>
 
