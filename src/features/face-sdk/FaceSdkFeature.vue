@@ -581,7 +581,6 @@
 import { defineComponent, ref } from 'vue';
 import { FeatureTitle, Button } from '../../components';
 import { useCamera } from '@biopassid/face-sdk';
-import { Options } from '@biopassid/face-sdk/types/options';
 
 const FaceSdkFeature = defineComponent({
     components: { FeatureTitle, Button },
@@ -591,7 +590,7 @@ const FaceSdkFeature = defineComponent({
         const element = ref<HTMLElement | null>(null);
 
         async function submit () {
-            const options: Options = {
+            const options = {
                 mask: {
                     enabled: (document.querySelector("#maskEnabled")! as any).checked,
                     type: 'face',
@@ -727,7 +726,7 @@ const FaceSdkFeature = defineComponent({
 
             const resp = await takePicture({
                 element: element.value!,
-                options,
+                options: options as any,
             });
 
             console.log(resp);

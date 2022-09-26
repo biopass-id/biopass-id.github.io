@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { reactive } from "vue";
-import useMultibiometricServices  from '../../../services/multibiometrics_services';
+import useQualityServices from "../../../services/quality_service";
 
 interface CropStore {
     image: string;
@@ -14,7 +14,7 @@ const cropStore: CropStore = reactive({
 
 export default function useCropStore() {
 
-    const { faceDetectService } = useMultibiometricServices("f086157128364d95887467c1bc7c7c3d");
+    const { icaoCropService } = useQualityServices("5a2ab510234144ecbfb78faf820cf63c");
 
     const image = computed(() => cropStore.image);
     const cropedImage = computed(() => `data:image/png;base64,${cropStore.cropedImage}`);
@@ -36,8 +36,8 @@ export default function useCropStore() {
     }
 
     async function makeRequest() {
-        const resp = await faceDetectService(cropStore.image);
-        cropStore.cropedImage = resp.Picture.base64;
+        const resp = await icaoCropService(cropStore.image);
+        cropStore.cropedImage = resp.IcaoCropedImage.Image;
     }
 
     function dispose() {
