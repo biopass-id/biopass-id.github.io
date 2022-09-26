@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --primary-color: #C59F64;
+        --primary-color-light: #F6F1EB;
+    }
+}
+
+@layer components {
+    /* Textos */
+    .titleLarge {
+        @apply text-gray-800 text-[1.75rem] font-bold;
+    }
+    .titleMedium {
+        @apply text-gray-800 text-xl font-bold;
+    }
+    .bodyMedium {
+        @apply text-gray-800
+    }
+
+    /* Botões */
+    .btnPrimary {
+        @apply h-12 rounded-md bg-primary text-white font-semibold active:scale-y-95 transition-all duration-150;
+    }
+    .btnOutline {
+        @apply h-12 rounded-md border-2 border-primary text-primary font-semibold active:scale-y-95 transition-all duration-150;
+    }
+}
