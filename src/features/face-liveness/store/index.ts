@@ -4,12 +4,14 @@ import useMultibiometricServices  from '../../../services/multibiometrics_servic
 
 interface LivenessStore {
     image: string;
-    spoof: boolean;
+    success: boolean;
+    spoofResult: string;
 }
 
 const livenessStore: LivenessStore = reactive({
     image: "",
-    spoof: false,
+    success: false,
+    spoofResult: "",
 });
 
 export default function useLivenessStore() {
@@ -17,7 +19,8 @@ export default function useLivenessStore() {
     const { faceSpoofService } = useMultibiometricServices("f086157128364d95887467c1bc7c7c3d");
 
     const image = computed(() => livenessStore.image);
-    const spoof = computed(() => livenessStore.spoof);
+    const success = computed(() => livenessStore.success);
+    const result = computed(() => livenessStore.spoofResult);
 
 
     function setFileImage(file: File): Promise<void> {
@@ -37,13 +40,16 @@ export default function useLivenessStore() {
 
     async function makeRequest() {
         const resp = await faceSpoofService(livenessStore.image);
-        livenessStore.spoof = resp.spoof;
+        livenessStore.success = resp.Success && !resp.spoof;
+        livenessStore.spoofResult = resp.spoof == true ? 'Attack' : resp.result;
     }
 
     function dispose() {
         livenessStore.image = "";
-        livenessStore.spoof = false;
+        livenessStore.success = false;
+        livenessStore.spoofResult = "";
+
     }
 
-    return { setBase64Image, makeRequest, image, spoof, dispose, setFileImage };
+    return { setBase64Image, makeRequest, image, success, dispose, setFileImage, result };
 }

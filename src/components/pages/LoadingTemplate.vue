@@ -1,7 +1,7 @@
 <template>
     <div class="flex-1 flex flex-col items-center justify-center">
         <Loading class="mb-4"/>
-        <Text>Please wait, we are making a request to the BioPass ID Face Compliance API</Text>
+        <Text>Please wait, we are making a request to the <b>BioPassID API</b></Text>
     </div>
 </template>
 

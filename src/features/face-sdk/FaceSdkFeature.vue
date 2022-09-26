@@ -13,7 +13,7 @@
                 <fieldset class="border border-gray-400 p-4 rounded mb-2">
                     <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Mask Style</h2>
                     <div class="w-40">
-                        <label class="block">Ativo</label>
+                        <label class="block">Active</label>
                         <input id="maskEnabled" type="checkbox" checked />
                     </div>
                     <div class="w-40">
@@ -445,7 +445,7 @@
 
                 <!-- Legenda -->
                 <fieldset class="border border-gray-400 p-4 rounded mb-2">
-                    <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Legenda</h2>
+                    <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Legend</h2>
 
                     <!-- confirm label -->
                     <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Title</h2>
@@ -518,13 +518,13 @@
 
                 <!-- Opções -->
                 <fieldset class="border border-gray-400 p-4 rounded mb-2">
-                    <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Opções gerais</h2>
+                    <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">General Options</h2>
 
                     <div class="bg-gray-400 my-4 h-px"></div>
                     <h2 class="font-bold text-xl text-gray-800 mb-5 text-center">Face Recognizier</h2>
                     <div class="w-52">
                         <label class="block" checked>Enabled</label>
-                        <input id="faceRecognizerEnabled" type="checkbox" checked/>
+                        <input id="faceDetectionEnabled" type="checkbox" checked/>
                     </div>
                     <div class="w-52">
                         <label class="block" checked>Auto Capture</label>
@@ -710,8 +710,8 @@ const FaceSdkFeature = defineComponent({
                         color: (document.querySelector("#subtitleColor")! as any).value,
                     },
                 },
-                faceRecognizer: {
-                    enabled: (document.querySelector("#faceRecognizerEnabled")! as any).checked,
+                faceDetection: {
+                    enabled: (document.querySelector("#faceDetectionEnabled")! as any).checked,
                     autoCapture: (document.querySelector("#autoCapture")! as any).checked,
                 },
                 width: (document.querySelector("#width")! as any).value,

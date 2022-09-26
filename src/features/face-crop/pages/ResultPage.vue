@@ -11,7 +11,7 @@
 
         <div class="flex items-center justify-center space-x-4 max-w-md w-full mx-auto mb-8">
             <Button type="btnOutline" class="flex-1" @click="$router.go(-1)">Restart Demo</Button>
-            <Button class="flex-1" @click="tryAgain">Another Match</Button>
+            <Button class="flex-1" @click="tryAgain">Another Crop</Button>
         </div>
     </div>
 </template>

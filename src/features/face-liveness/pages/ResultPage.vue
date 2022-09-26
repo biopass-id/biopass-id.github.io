@@ -5,8 +5,8 @@
             <img class="max-w-sm rounded-2xl w-full mb-8" :src="image"/>
             <Text type="titleMedium" class="mb-4">Liveness Result</Text>
 
-            <div class="px-8 py-2 rounded-lg font-bold" :class="spoof ?'bg-red-100 text-red-500' :  'bg-green-100 text-green-500'">
-                {{ spoof ? 'Attack' : 'Real'}}
+            <div class="px-8 py-2 rounded-lg font-bold" :class="success ?'bg-green-100 text-green-500' : 'bg-red-100 text-red-500'">
+                {{ success ? 'Real' : result }}
             </div>
         </div>
         <Divider class="mb-6"/>
@@ -15,7 +15,7 @@
 
         <div class="flex items-center justify-center space-x-4 max-w-md w-full mx-auto mb-8">
             <Button type="btnOutline" class="flex-1" @click="$router.go(-1)">Restart Demo</Button>
-            <Button class="flex-1" @click="tryAgain">Another Match</Button>
+            <Button class="flex-1" @click="tryAgain">Another Liveness</Button>
         </div>
     </div>
 </template>
@@ -29,7 +29,7 @@ import useLivenessStore from '../store';
 const ResultPage = defineComponent({
     components: { Text, Button, Divider },
     setup() {
-        const { image, dispose, spoof } = useLivenessStore();
+        const { image, dispose, success, result } = useLivenessStore();
 
         const { replace } = useRouter();
         function tryAgain() {
@@ -37,7 +37,7 @@ const ResultPage = defineComponent({
             setTimeout(() => dispose(), 300);
         }
 
-        return { image, tryAgain, spoof };
+        return { image, tryAgain, success, result };
     }
   
 });
