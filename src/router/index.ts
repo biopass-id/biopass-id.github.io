@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import MainView from '../views/MainView.vue';
 import FaceSdkFeature from '../features/face-sdk/FaceSdkFeature.vue';
 import FaceVerificationFeature from '../features/face-verification/FaceVerificationFeature.vue';
@@ -8,7 +8,7 @@ import complianceRouter from '../features/face-compliance-verification/router';
 import livenessRouter from '../features/face-liveness/router';
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     routes: [
         {
             path: '/',
