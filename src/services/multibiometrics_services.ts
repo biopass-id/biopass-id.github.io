@@ -253,7 +253,7 @@ export default function useMultibiometricServices(key: string) {
         /**
          * Face spoofing detection operation.
          */
-        async faceSpoofService(picture: string): Promise<SpoofResponseDTO> {
+        async livenessService(picture: string): Promise<SpoofResponseDTO> {
             try {
                 
                 // Dados a serem enviados
@@ -264,7 +264,13 @@ export default function useMultibiometricServices(key: string) {
                 };
 
                 // Requisição
-                const resp = await http<SpoofResponseDTO, SpoofDTO>({ url: '/multibiometrics/liveness', token: key, method: 'POST', body: dataToSend });
+                const resp = await http<SpoofResponseDTO, SpoofDTO>({
+                    baseUrl: 'https://hml-api.biopassid.com',
+                    url: '/multibiometrics/liveness', 
+                    token: key,
+                    method: 'POST', 
+                    body: dataToSend 
+                });
 
                 return resp;
                 

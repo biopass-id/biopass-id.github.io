@@ -16,7 +16,7 @@ const livenessStore: LivenessStore = reactive({
 
 export default function useLivenessStore() {
 
-    const { faceSpoofService } = useMultibiometricServices("f086157128364d95887467c1bc7c7c3d");
+    const { livenessService } = useMultibiometricServices("82c6d66df9b54db9bee5b779d91de202");
 
     const image = computed(() => livenessStore.image);
     const success = computed(() => livenessStore.success);
@@ -39,7 +39,7 @@ export default function useLivenessStore() {
     }
 
     async function makeRequest() {
-        const resp = await faceSpoofService(livenessStore.image);
+        const resp = await livenessService(livenessStore.image);
         livenessStore.success = resp.Success && !resp.spoof;
         livenessStore.spoofResult = resp.spoof == true ? 'Attack' : resp.result;
     }

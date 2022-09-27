@@ -1,7 +1,13 @@
-const baseUrl = "https://api.biopassid.com";
+const _baseUrl = "https://api.biopassid.com";
 
-export default async function http<R, M = any>(data: { url: string, method: "GET" | "POST" | 'PUT' | 'DELETE', body?: M, token: string }) {
-
+export default async function http<R, M = any>(data: {
+    url: string,
+    baseUrl?: string,
+    method: "GET" | "POST" | 'PUT' | 'DELETE', 
+    body?: M,
+    token: string 
+}) {
+    const baseUrl: string = data.baseUrl ?? _baseUrl;
     const { url, method, body, token } = data;
 
     const resp = await fetch(baseUrl + url, {
